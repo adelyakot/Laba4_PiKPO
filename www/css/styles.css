@@ -2,8 +2,8 @@
 body {
 	font: 12px Tahoma, sans-serif;
 
-	background: #ffffff url(https://sun9-west.userapi.com/sun9-4/s/v1/ig2/G23AJaIcOL_7yw5KOGFX20mNQlCnJcBR8HyKqR2LtbQuXh0Q170VZgJI00s5GjlDuHQklXCJplrUmQNwkh9k_zd7.jpg?size=1600x1000&quality=95&type=album) ; background-size: cover;
-	margin: 0;
+	background: #ffffff url(https://i.pinimg.com/originals/72/3e/bf/723ebfcc7b03c395d61255c8a9d70f07.png?size=1600x1000&quality=95&type=album) ; background-size: cover;
+	margin: 0; 
 }
 
 
@@ -58,7 +58,7 @@ nav a {
 }
 
 h1 {
-	background:#00aeff;
+	background:#808080;
 	color:#ffffff;
 	margin: 5px;
 	bottom: 10px;
@@ -74,7 +74,7 @@ h1 {
 	padding: 12px 40px;
 	margin: 10px 20px;
 	border-radius: 30px;
-	background-image: linear-gradient(45deg, #ACACA7 0%, #00aeff 50%, #00aeff 100%);
+	background-image: linear-gradient(45deg, #ACACA7 0%, #808080 50%, #808080 100%);
 	background-position: 100% 0;
 	background-size: 200% 200%;
 	font-family: 'Montserrat', sans-serif;
@@ -152,7 +152,7 @@ h3 {
 
 aside > h2 {
 
-	background: #00aeff;
+	background: #808080;
 	font: 14px 'Oswald', sans-serif;
 	color: #fff;
 	padding: 10px;
@@ -161,7 +161,7 @@ aside > h2 {
 }
 
 aside > h3 {
-	background: #00aeff;
+	background: #808080;
 	font: 14px 'Oswald', sans-serif;
 	color: rgb(255, 255, 255);
 	padding: 10px;
