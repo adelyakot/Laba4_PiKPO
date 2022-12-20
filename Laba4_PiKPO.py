@@ -7,8 +7,8 @@ import time
     Данный модуль запускает программу
         ("точка входа" приложения)
 """
-DATASOURCE = "tmdb_5000_movies1.csv"
-DB_URL = 'sqlite:///moviesdb.db'
+DATASOURCE = "tmdb_5000_movies1_copy.csv"
+DB_URL = 'sqlite:///db1.db'
 
 # В зависимости от расширения файла вызываем соответствующий фабричный метод
 def init_processor(source: str) -> DataProcessor:

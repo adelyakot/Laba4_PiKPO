@@ -27,6 +27,7 @@ class SQLiteStoreConnector(StoreConnector):
         if self._cursor is not None:
             try:
                 result = self._cursor.execute(query)
+                self.connection.commit()
             except Exception as e:
                 self.connection.rollback()
                 print(f'Query execution error: {str(e)}')

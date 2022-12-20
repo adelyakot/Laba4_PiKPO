@@ -23,7 +23,7 @@ def select_all_from_source_files(connector: StoreConnector):
 def insert_into_source_files(connector: StoreConnector, filename: str):
     now = datetime.now() # текущая дата и время
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")   # преобразуем в формат SQL
-    #connector.start_transaction()
+    connector.start_transaction()
     query = f'INSERT INTO source_files (filename, processed) VALUES (\'{filename}\', \'{date_time}\')'
     result = connector.execute(query)
     connector.end_transaction()
@@ -41,7 +41,7 @@ def insert_rows_into_processed_data1(connector: StoreConnector, dataframe: DataF
     last_file_id = files_list[0][0]  # получаем индекс последней записи из таблицы с файлами
     if len(files_list) > 0:
         for row in rows:
-            connector.execute(f'INSERT INTO processed_data (id,genres, homepage, title_movie, production_countries, Release_year, Runtime,tagline, period_cathegory, source_file) VALUES (\'{row["id"]}\', \'{row["genres"]}\', \'{row["homepage"]}\'\'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\'\'{row["Runtime"]}\'\'{row["tagline"]}\', \'{row["period_cathegory"]}\', {last_file_id})')
+            connector.execute(f'INSERT INTO processed_data1 (genres, homepage, title_movie, production_countries, Release_year, Runtime,tagline, period_cathegory, source_file) VALUES ( \'{row["genres"]}\', \'{row["homepage"]}\'\'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\'\'{row["Runtime"]}\'\'{row["tagline"]}\', \'{row["period_cathegory"]}\', {last_file_id})')
         print('Data was inserted successfully')
     else:
         print('File records not found. Data inserting was canceled.')
@@ -51,10 +51,11 @@ def insert_rows_into_processed_data1(connector: StoreConnector, dataframe: DataF
 def insert_rows_into_processed_data(connector: StoreConnector, dataframe: DataFrame, filename: str):
     rows = dataframe.to_dict('records')
     files_list = select_all_from_source_files(connector)
+    last_file_id = files_list[0][0]
     connector.start_transaction()
     if len(files_list) > 0:
         for row in rows:
-            connector.execute(f'INSERT INTO processed_data1 (id,genres, homepage, title_movie, production_countries, Release_year, Runtime,tagline, period_cathegory, source_file) VALUES (\'{row["id"]}\', \'{row["genres"]}\', \'{row["homepage"]}\'\'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\', \'{row["Runtime"]}\', \'{row["tagline"]}\', \'{row["period_cathegory"]}\', {last_file_id})')
+            connector.execute(f'INSERT INTO processed_data1 (genres, homepage, title_movie, production_countries, Release_year, Runtime, tagline, period_cathegory, source_file) VALUES \'{row["genres"]}\', \'{row["homepage"]}\'\'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\', \'{row["Runtime"]}\', \'{row["tagline"]}\', \'{row["period_cathegory"]}\', {last_file_id})')
         print('Data was inserted successfully')
     else:
         print('File records not found. Data inserting was canceled.')
