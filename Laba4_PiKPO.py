@@ -1,6 +1,7 @@
 from processor.dataprocessor_factory import *    # подключаем фабрику обработчиков данных
 from repository.connectorfactory import *       # подключаем фабрику коннекторов к БД
 from repository.sql_api import *                # подключаем API для работы с БД
+from repository.sqliteconnector import *
 import time
 
 """
@@ -35,10 +36,17 @@ if __name__ == '__main__':
 
     # Работа с БД
     if result is not None:
-        db_connector = SQLStoreConnectorFactory().get_connector(DB_URL)   # получаем объект соединения
+        
+        db_connector = SQLiteStoreConnector(DB_URL)
+        db_connector.connect()
+        db_connector.start_transaction()
+        #db_connector = SQLStoreConnectorFactory().get_connector(DB_URL)   # получаем объект соединения
+        #db_connector.connect()
         insert_into_source_files(db_connector, DATASOURCE)                # сохраняем в БД информацию о файле с набором данных
         print(select_all_from_source_files(db_connector))                 # вывод списка всеъ обработанных файлов
-        insert_rows_into_processed_data(db_connector, result.iloc[:5], DATASOURCE )     # записываем в БД 5 первых строк результата
+        insert_rows_into_processed_data(db_connector, result , DATASOURCE)     # записываем в БД 5 первых строк результата
         # Завершаем работу с БД
         db_connector.close()
+        
 
+     

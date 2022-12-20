@@ -12,6 +12,7 @@ class SQLiteStoreConnector(StoreConnector):
             # Подключаемся к файлу по указанному пути без префикса 'sqlite:///'
             connection = sqlite3.connect(self._datastore[10:])
             cursor = connection.cursor()
+            self.start_transaction()
             # Включаем поддержку внешних ключей для SQLite
             cursor.execute("PRAGMA foreign_keys = 1")
             cursor.close()

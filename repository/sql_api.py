@@ -31,31 +31,31 @@ def insert_into_source_files(connector: StoreConnector, filename: str):
 
 
 # Вставка строк из DataFrame в БД
-def insert_rows_into_processed_data1(connector: StoreConnector, dataframe: DataFrame):
+def insert_rows_into_processed_data(connector: StoreConnector, dataframe: DataFrame, filename: str):
     """ Вставка строк из DataFrame в БД с привязкой данных к последнему обработанному файлу (по дате) """
-    rows = dataframe.to_dict('records')
-    files_list = select_all_from_source_files(connector)    # получаем список обработанных файлов
+    
+    rows = dataframe.to_dict('records') 
+    
+    # получаем список обработанных файлов
+    files_list = select_all_from_source_files(connector)
+    last_file_id = files_list[0][0] 
+    
     # т.к. строка БД после выполнения SELECT возвращается в виде объекта tuple, например:
     # row = (1, 'seeds_dataset.csv', '2022-11-15 22:03:16') ,
     # то значение соответствующей колонки можно получить по индексу, например id = row[0]
-    last_file_id = files_list[0][0]  # получаем индекс последней записи из таблицы с файлами
+      # получаем индекс последней записи из таблицы с файлами
+    #connector.start_transaction()
     if len(files_list) > 0:
         for row in rows:
-            connector.execute(f'INSERT INTO processed_data1 (genres, homepage, title_movie, production_countries, Release_year, Runtime,tagline, period_cathegory, source_file) VALUES ( \'{row["genres"]}\', \'{row["homepage"]}\'\'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\'\'{row["Runtime"]}\'\'{row["tagline"]}\', \'{row["period_cathegory"]}\', {last_file_id})')
+            connector.start_transaction()
+            query = f'INSERT INTO processed_data1 (genres,title_movie,production_countries,Release_year,Runtime,tagline,source_file) VALUES (\'{row["genres"]}\', \'{row["title_movie"]}\',\'{row["production_countries"]}\', \'{row["Release_year"]}\',\'{row["Runtime"]}\',\'{row["tagline"]}\', {last_file_id})'
+            connector.execute(query)
         print('Data was inserted successfully')
+        
     else:
         print('File records not found. Data inserting was canceled.')
+    #connector.end_transaction()
 
 
-# Вставка строк из DataFrame в БД
-def insert_rows_into_processed_data(connector: StoreConnector, dataframe: DataFrame, filename: str):
-    rows = dataframe.to_dict('records')
-    files_list = select_all_from_source_files(connector)
-    last_file_id = files_list[0][0]
-    connector.start_transaction()
-    if len(files_list) > 0:
-        for row in rows:
-            connector.execute(f'INSERT INTO processed_data1 (genres, homepage, title_movie, production_countries, Release_year, Runtime, tagline, period_cathegory, source_file) VALUES \'{row["genres"]}\', \'{row["homepage"]}\'\'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\', \'{row["Runtime"]}\', \'{row["tagline"]}\', \'{row["period_cathegory"]}\', {last_file_id})')
-        print('Data was inserted successfully')
-    else:
-        print('File records not found. Data inserting was canceled.')
+    #( \'{row["genres"]}\', \'{row["title_movie"]}\'\'{row["production_countries"]}\', \'{row["Release_year"]}\'\'{row["Runtime"]}\'\'{row["tagline"]}\', {last_file_id})'        
+    
